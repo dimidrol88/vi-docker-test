@@ -1,0 +1,64 @@
+version: '3.4'
+
+services:
+  nginx:
+    build:
+      context: ./docker
+      dockerfile: nginx.docker
+    container_name: vi-docker-test-nginx
+    volumes:
+      - ./:/app
+    ports:
+      - "8080:80"
+    depends_on:
+      - php
+    networks:
+      - internal
+  php:
+    build:
+      context: ./docker
+      dockerfile: php.docker
+    container_name: vi-docker-test-php
+    volumes:
+      - ./:/app
+    depends_on:
+      - mysql
+    networks:
+      - internal
+  mysql:
+    build:
+      context: ./docker
+      dockerfile: mysql.docker
+    container_name: vi-docker-test-mysql
+    restart: always
+    volumes:
+      - db-volume:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: app
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - internal
+  adminer:
+    image: adminer
+    container_name: vi-docker-test-adminer
+    ports:
+      - 8089:8080
+    depends_on:
+      - mysql
+    networks:
+      - internal
+
+volumes:
+  db-volume:
+
+networks:
+  internal:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.11.0/28
