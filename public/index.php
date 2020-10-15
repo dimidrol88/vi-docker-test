@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
+use App\entities\Log;
+
 error_reporting(E_ALL);
 ini_set('display_errors', 'on');
 
-require_once('../src/autoloader.php');
+require_once('../vendor/autoload.php');
 
 $ip = $_SERVER['REMOTE_ADDR'] ?: '0.0.0.0';
-$log = new \core\entities\Log();
+$log = new Log();
 
 $log->add($ip);
 

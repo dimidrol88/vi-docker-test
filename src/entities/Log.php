@@ -1,8 +1,8 @@
 <?php
 
-namespace core\entities;
+namespace App\entities;
 
-use core\db\DB;
+use App\db\DB;
 
 class Log extends DB
 {
