@@ -1,7 +1,14 @@
 FROM php:7.4-fpm
 
-RUN apt-get update
+RUN apt update
 
-RUN docker-php-ext-install pdo_mysql
+RUN apt install git -y
+
+RUN docker-php-ext-install sockets pdo_mysql bcmath json
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet
+
+ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_MEMORY_LIMIT -1
 
 WORKDIR /app

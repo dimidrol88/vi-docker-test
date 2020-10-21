@@ -23,6 +23,7 @@ services:
       - ./:/app
     depends_on:
       - mysql
+      - rabbitmq
     networks:
       - internal
   mysql:
@@ -49,6 +50,19 @@ services:
       - 8089:8080
     depends_on:
       - mysql
+    networks:
+      - internal
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_ERLANG_COOKIE: ASMDIOEFNJLAWIENWAIEWQLKNWE
+      RABBITMQ_DEFAULT_USER: rabbit
+      RABBITMQ_DEFAULT_PASS: rabbit
+    ports:
+      - "8085:15672"
+      - "5672:5672"
+    volumes:
+      - ./docker/rabbit/plugins:/etc/rabbitmq/enabled_plugins
     networks:
       - internal
 
